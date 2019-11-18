@@ -52,11 +52,24 @@ class DataBase(object):
         sql=("INSERT INTO client (nome,cpf,email,adress_id) VALUES ('%s','%s','%s','%s')"%(client.nome,client.cpf,client.email,client.adress_id))
         cursor.execute(sql)
         cursor.close()
-    
-    def get_locate(self,locate):
-        cursor=self.connector.cursor()
-        sql=("SELECT * FROM locates WHERE latitude='%s' and longitude='%s' and srid='%s' and address_id='%s'"
-        %(locate.latitude,locate.longitude,locate.srid,locate.address_id))
+    def insert_product(self,product):
+        cursor = self.connector.cursor()
+        data=(product)
+        sql =("INSERT INTO product (nome,codigo,price,descricao,quantidade) values ('%s','%s','%s','%s','%s')"%(product.nome,product.codigo,product.price,product.descricao,product.quantidade))
         cursor.execute(sql)
-        print(cursor.fetch())
+        cursor.close()
+    
+    def insert_categories(self,categorie):
+        cursor = self.connector.cursor()
+        data=(categorie)
+        sql = ("INSERT INTO categoria (tipo,descricao,product) values ('%s', '%s','%s')"%(categorie.tipo,categorie.descricao,categorie.product))
+        cursor.execute(sql)
+        cursor.close()
+
+    def get_projection_join(self,id_products):
+        cursor = self.connector.cursor()
+        sql = ("SELECT nome,price from product INNER JOIN categoria ON categoria.product=product.id")
+        cursor.execute(sql)
+        return cursor.fetchall()
+    
         
